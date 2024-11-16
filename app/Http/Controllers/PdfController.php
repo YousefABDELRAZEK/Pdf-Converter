@@ -21,20 +21,18 @@ class PdfController extends Controller
             // Initialize an array to store image paths
             $imagePaths = [];
 
-            // Save each image to the public storage directory
             foreach ($request->file('images') as $image) {
                 $path = $image->store('images', 'public');  // Save in 'storage/app/public/images'
-                $imagePaths[] = storage_path('app/public/' . $path);  // Store the full path to use in the PDF
+                $imagePaths[] = storage_path('app/public/' . $path);  
             }
 
-            // Generate the PDF with stored images
+           
             $pdf = Pdf::loadView('pdfconverter', ['images' => $imagePaths])->setPaper('a4', 'portrait');
 
-            // Download the PDF
+           
             return $pdf->download('converted-images.pdf');
         }
 
-        // Display the form when accessing the page
         return view('pdfconverter');
     }
 }
